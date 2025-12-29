@@ -50,7 +50,7 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding-top: 7
 .countdown { display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.3); padding: 8px 15px; border-radius: 8px; }
 .timer-box { font-family: monospace; font-weight: bold; font-size: 1.2rem; color: white; }
 
-/* GRID KHUSUS FLASH SALE */
+/* GRID FLASH SALE */
 .flash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
 .flash-card { background: white; border-radius: 10px; overflow: hidden; color: black; position: relative; }
 .flash-card .card-info h3 { color: black; }
@@ -111,7 +111,7 @@ details p { margin-top: 10px; color: #ccc; font-size: 0.95rem; line-height: 1.5;
 .notif-text p { font-size: 0.75rem; color: var(--primary); font-weight: 600; }
 .notif-time { font-size: 0.7rem; color: #888; margin-top: 2px; }
 
-/* === PERBAIKAN CART SIDEBAR (ANDROID FIX) === */
+/* === UPDATE PERBAIKAN KERANJANG === */
 .shopping-cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1001; display: none; }
 .shopping-cart-overlay.active { display: block; }
 
@@ -119,14 +119,20 @@ details p { margin-top: 10px; color: #ccc; font-size: 0.95rem; line-height: 1.5;
   position: fixed; 
   top: 0; 
   right: -100%; 
-  width: 350px; /* Sedikit lebih lebar */
-  max-width: 85%; /* Agar pas di HP kecil */
-  height: 100dvh; /* PAKAI DVH AGAR TIDAK KETUTUP TOOLBAR HP */
+  /* Lebar menyesuaikan, max 400px, di HP jadi 85% layar */
+  width: 85%; 
+  max-width: 400px; 
+  
+  /* Gunakan 100% untuk kompatibilitas penuh */
+  height: 100%; 
+  
   background: #1a1a1a; 
   z-index: 1002; 
   transition: 0.3s; 
+  
+  /* Flexbox agar footer bisa didorong ke bawah */
   display: flex; 
-  flex-direction: column; /* Flexbox agar footer nempel bawah */
+  flex-direction: column; 
   border-left: 1px solid var(--border); 
 }
 
@@ -137,34 +143,36 @@ details p { margin-top: 10px; color: #ccc; font-size: 0.95rem; line-height: 1.5;
   border-bottom: 1px solid var(--border); 
   display: flex; 
   justify-content: space-between; 
-  align-items: center; 
-  flex-shrink: 0; /* Header tidak boleh gepeng */
+  align-items: center;
+  flex-shrink: 0; /* Header jangan gepeng */
 }
 
 #close-cart-btn { background: none; border: none; color: white; cursor: pointer; }
 
-/* Area Scroll Barang */
+/* Area Barang Scrollable */
 .cart-items-container { 
-  flex: 1; /* Mengisi sisa ruang tengah */
-  overflow-y: auto; /* Cuma area ini yang discroll */
+  flex: 1; /* Mengisi semua ruang kosong */
+  overflow-y: auto; /* Biar bisa discroll */
   padding: 20px; 
-  overflow-x: hidden; 
+  overflow-x: hidden;
 }
 
 .empty-state { text-align: center; color: #555; margin-top: 50px; }
 
-/* Footer Keranjang (Tombol Checkout) */
+/* BAGIAN TOMBOL CHECKOUT (FIX ANDROID) */
 .cart-footer { 
   padding: 20px; 
   border-top: 1px solid var(--border); 
   background: #1a1a1a; 
-  flex-shrink: 0; /* Footer tidak boleh gepeng/ilang */
-  padding-bottom: 30px; /* Jarak aman tambahan buat HP */
+  
+  /* PENTING: Tambahkan Padding Bawah Besar agar tombol naik ke atas */
+  /* Ini mengatasi address bar browser HP atau tombol navigasi */
+  padding-bottom: 100px; 
+  flex-shrink: 0;
 }
 
 .total-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold; }
 .total-price { color: var(--primary); font-size: 1.2rem; }
 .btn-checkout { width: 100%; padding: 12px; background: #25D366; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-.btn-checkout:active { transform: scale(0.98); }
 
 footer { text-align: center; padding: 30px; color: #666; font-size: 0.9rem; border-top: 1px solid var(--border); margin-top: 60px; }
