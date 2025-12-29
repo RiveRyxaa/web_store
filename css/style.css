@@ -1,5 +1,5 @@
 :root {
-  --primary: #FFB800; /* Warna Emas */
+  --primary: #FFB800;
   --bg-dark: #141414;
   --card-dark: #1F1F1F;
   --text-main: #FFFFFF;
@@ -15,13 +15,11 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding-top: 7
 .nav-container { width: 90%; max-width: 1200px; display: flex; justify-content: space-between; align-items: center; }
 .navbar-logo { font-size: 1.5rem; font-weight: 800; color: white; text-decoration: none; font-style: italic; }
 .navbar-logo span { color: var(--primary); }
-
 .search-wrapper { flex: 1; max-width: 400px; margin: 0 20px; position: relative; display: none; }
 @media(min-width: 768px) { .search-wrapper { display: block; } }
 .search-wrapper input { width: 100%; padding: 10px 40px 10px 15px; border-radius: 8px; background: #2A2A2A; border: 1px solid transparent; color: white; outline: none; }
 .search-wrapper input:focus { border-color: var(--primary); }
 .search-wrapper svg { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 18px; }
-
 .nav-icons { display: flex; align-items: center; gap: 20px; }
 .nav-link-desktop { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; display: none; transition: 0.3s; }
 .nav-link-desktop:hover { color: var(--primary); }
@@ -32,7 +30,7 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding-top: 7
 /* MAIN LAYOUT */
 .main-wrapper { max-width: 1200px; margin: 0 auto; padding: 20px 5%; }
 
-/* 1. SLIDER CSS */
+/* SLIDER */
 .slider-section { position: relative; width: 100%; height: 300px; overflow: hidden; border-radius: 12px; margin-bottom: 30px; border: 1px solid var(--border); }
 .slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transition: opacity 0.5s ease-in-out; display: flex; align-items: center; justify-content: center; text-align: center; }
 .slide.active { opacity: 1; }
@@ -44,20 +42,31 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding-top: 7
 .prev-btn, .next-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.5); color: white; border: none; padding: 10px 15px; cursor: pointer; border-radius: 50%; z-index: 3; font-size: 1.5rem; }
 .prev-btn { left: 20px; } .next-btn { right: 20px; }
 
-/* 2. FLASH SALE CSS */
-.flash-sale-section { background: linear-gradient(45deg, #cc0000, #ff5e00); padding: 15px 20px; border-radius: 8px; margin-bottom: 25px; color: white; display: flex; align-items: center; justify-content: space-between; }
-.flash-header { display: flex; align-items: center; width: 100%; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
-.flash-header h3 { font-style: italic; font-weight: 900; font-size: 1.2rem; }
-.countdown { display: flex; align-items: center; gap: 10px; }
-.timer-box { background: black; padding: 5px 10px; border-radius: 5px; font-family: monospace; font-weight: bold; font-size: 1.1rem; color: var(--primary); border: 1px solid var(--primary); }
+/* FLASH SALE (UPDATE LAYOUT) */
+.flash-sale-section { background: linear-gradient(135deg, #b91c1c, #ea580c); padding: 25px; border-radius: 12px; margin-bottom: 40px; color: white; box-shadow: 0 10px 30px rgba(185, 28, 28, 0.2); }
+.flash-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px; margin-bottom: 20px; }
+.flash-title h3 { font-style: italic; font-weight: 900; font-size: 1.5rem; }
+.flash-title p { font-size: 0.9rem; opacity: 0.9; }
+.countdown { display: flex; align-items: center; gap: 10px; background: rgba(0,0,0,0.3); padding: 8px 15px; border-radius: 8px; }
+.timer-box { font-family: monospace; font-weight: bold; font-size: 1.2rem; color: white; }
 
-/* 3. FILTER CSS */
+/* GRID KHUSUS FLASH SALE */
+.flash-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+/* Style khusus kartu flash sale agar beda dikit */
+.flash-card { background: white; border-radius: 10px; overflow: hidden; color: black; position: relative; }
+.flash-card .card-info h3 { color: black; }
+.flash-card .card-price { color: #d62828; font-size: 1.1rem; }
+.flash-card .btn-add { border-color: #d62828; color: #d62828; }
+.flash-card .btn-add:hover { background: #d62828; color: white; }
+.flash-badge { position: absolute; top: 10px; left: 10px; background: #FFB800; color: black; padding: 2px 8px; font-weight: bold; font-size: 0.7rem; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+/* FILTER */
 .filter-section { overflow-x: auto; white-space: nowrap; margin-bottom: 25px; padding-bottom: 10px; }
 .tabs-wrapper { display: inline-flex; gap: 10px; }
 .tab-btn { background: var(--card-dark); color: var(--text-muted); border: 1px solid var(--border); padding: 8px 20px; border-radius: 50px; cursor: pointer; font-weight: 600; transition: 0.3s; }
 .tab-btn.active, .tab-btn:hover { background: var(--primary); color: black; border-color: var(--primary); }
 
-/* 4. PRODUCT GRID */
+/* PRODUCT GRID */
 .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
 @media (max-width: 480px) { .product-grid { grid-template-columns: 1fr 1fr; gap: 10px; } }
 .product-card { background: var(--card-dark); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: transform 0.2s, border-color 0.2s; display: flex; flex-direction: column; }
@@ -66,10 +75,14 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding-top: 7
 .card-info { padding: 12px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
 .card-info h3 { font-size: 0.9rem; margin-bottom: 5px; line-height: 1.3; color: #eee; font-weight: 500; }
 .card-price { font-size: 1rem; color: var(--primary); font-weight: 700; margin-bottom: 10px; }
+
+/* STYLE HARGA CORET */
+.slash-price { text-decoration: line-through; color: #888; font-size: 0.8rem; margin-right: 5px; font-weight: 400; }
+
 .btn-add { width: 100%; background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 8px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; }
 .btn-add:hover { background: var(--primary); color: black; }
 
-/* 5. TOOLS GRID */
+/* TOOLS */
 .tools-section { margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--border); }
 .section-header { text-align: center; margin-bottom: 30px; }
 .section-header h2 { font-size: 1.8rem; color: white; margin-bottom: 5px; }
@@ -86,7 +99,7 @@ body { background-color: var(--bg-dark); color: var(--text-main); padding-top: 7
 .btn-tool { padding: 12px; background: var(--primary); color: black; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 5px; }
 .result-box { margin-top: 20px; padding: 15px; background: #111; border-radius: 8px; color: var(--primary); font-weight: bold; display: none; border: 1px dashed var(--border); }
 
-/* 6. FAQ CSS */
+/* FAQ & FOOTER */
 .faq-section { margin-top: 60px; padding-bottom: 40px; }
 .faq-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 15px; }
 details { background: var(--card-dark); padding: 15px; border-radius: 8px; border: 1px solid var(--border); cursor: pointer; transition: 0.3s; }
@@ -95,27 +108,22 @@ summary { font-weight: 600; list-style: none; display: flex; justify-content: sp
 summary::after { content: '+'; font-size: 1.2rem; color: var(--primary); }
 details[open] summary::after { content: '-'; }
 details p { margin-top: 10px; color: #ccc; font-size: 0.95rem; line-height: 1.5; border-top: 1px solid #333; padding-top: 10px; }
-
-/* 7. LIVE NOTIF */
 .live-notif { position: fixed; bottom: 20px; left: 20px; background: rgba(30,30,30,0.95); border: 1px solid var(--primary); border-radius: 12px; padding: 12px 15px; display: flex; align-items: center; gap: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 9999; transform: translateX(-150%); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); backdrop-filter: blur(5px); width: 300px; }
 .live-notif.show { transform: translateX(0); }
 .notif-img { width: 45px; height: 45px; border-radius: 8px; object-fit: cover; border: 1px solid #444; }
 .notif-text h4 { font-size: 0.85rem; color: white; margin-bottom: 2px; }
 .notif-text p { font-size: 0.75rem; color: var(--primary); font-weight: 600; }
 .notif-time { font-size: 0.7rem; color: #888; margin-top: 2px; }
-
-/* CART & FOOTER */
 .shopping-cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1001; display: none; }
 .shopping-cart-overlay.active { display: block; }
 .shopping-cart { position: fixed; top: 0; right: -100%; width: 320px; height: 100vh; background: #1a1a1a; z-index: 1002; transition: 0.3s; display: flex; flex-direction: column; border-left: 1px solid var(--border); }
 .shopping-cart.active { right: 0; }
 .cart-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
 #close-cart-btn { background: none; border: none; color: white; cursor: pointer; }
-.cart-items-container { flex: 1; overflow-y: auto; padding: 20px; }
+.cart-items-container { flex: 1; overflow-y: auto; padding: 20px; overflow-x: hidden; }
 .empty-state { text-align: center; color: #555; margin-top: 50px; }
 .cart-footer { padding: 20px; border-top: 1px solid var(--border); background: #1a1a1a; }
 .total-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold; }
 .total-price { color: var(--primary); font-size: 1.2rem; }
 .btn-checkout { width: 100%; padding: 12px; background: #25D366; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
-
 footer { text-align: center; padding: 30px; color: #666; font-size: 0.9rem; border-top: 1px solid var(--border); margin-top: 60px; }

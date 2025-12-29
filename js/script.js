@@ -4,97 +4,34 @@
 const adminNumber = "6281249554812"; 
 const backendUrl = "https://backend-web-nu.vercel.app/create-transaction";
 
-// DATA PRODUK (Update: Menggunakan Gambar Stok Gaming HD dari Unsplash)
+// DATA PRODUK (Menambahkan 'originalPrice' untuk harga coret)
 const productsData = [
-    // === RANK (Gambar: Trofi & Medali) ===
     { 
         id: 1, 
         name: "Joki GM - Epic", 
         price: 50000, 
+        originalPrice: 75000, // HARGA CORET (DISKON)
         category: "rank", 
-        img: "img/grandmaster.jpg" // Gambar Ranking/Chart
+        img: "img/grandmaster.jpg" 
     },
-    { 
-        id: 2, 
-        name: "Joki Epic - Legend", 
-        price: 80000, 
-        category: "rank", 
-        img: "img/epic.jpg" // Gambar Mahkota/Raja
-    },
-    { 
-        id: 3, 
-        name: "Joki Legend - Mythic", 
-        price: 130000, 
-        category: "rank", 
-        img: "img/legend.jpg" // Gambar Emas Premium
-    },
-    { 
-        id: 4, 
-        name: "Joki Mythic Grading", 
-        price: 150000, 
-        category: "rank", 
-        img: "img/mawi.jpg" // Gambar Power/Energy
-    },
+    { id: 2, name: "Joki Epic - Legend", price: 80000, category: "rank", img: "img/epic.jpg" },
+    { id: 3, name: "Joki Legend - Mythic", price: 130000, category: "rank", img: "img/legend.jpg" },
+    { id: 4, name: "Joki Mythic Grading", price: 150000, category: "rank", img: "img/mawi.jpg" },
     { 
         id: 5, 
         name: "Paket Glory (50 ★)", 
         price: 800000, 
+        originalPrice: 1000000, // HARGA CORET (DISKON)
         category: "rank", 
-        img: "img/glory.jpg" // Gambar Kristal/Berlian
+        img: "img/glory.jpg" 
     },
-    
-    // === CLASSIC / WR (Gambar: Aksi & Setup Gaming) ===
-    { 
-        id: 6, 
-        name: "Classic WR (1 Match)", 
-        price: 5000, 
-        category: "classic", 
-        img: "img/alucard.jpg" // Gambar Layar Game
-    },
-    { 
-        id: 7, 
-        name: "Paket WR 100% (10x)", 
-        price: 60000, 
-        category: "classic", 
-        img: "img/push mmr.jpg" // Gambar Visual Menang
-    },
-    { 
-        id: 8, 
-        name: "Push MMR Hero", 
-        price: 40000, 
-        category: "classic", 
-        img: "img/yss.jpg" // Gambar Keyboard Gaming
-    },
-
-    // === JASA LAIN (Gambar: Controller & Tech) ===
-    { 
-        id: 9, 
-        name: "Joki Gendong (Jam)", 
-        price: 35000, 
-        category: "jasa", 
-        img: "img/mpl.jfif" // Gambar Stick Controller
-    },
-    { 
-        id: 10, 
-        name: "Joki MCL Mingguan", 
-        price: 100000, 
-        category: "jasa", 
-        img: "img/mcl.jpg" // Gambar Turnamen/Setup
-    },
-    { 
-        id: 11, 
-        name: "Unbind Paksa Akun", 
-        price: 50000, 
-        category: "jasa", 
-        img: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=500&auto=format&fit=crop" // Gambar Gembok/Security
-    },
-    { 
-        id: 12, 
-        name: "Akun Smurf Lvl 30", 
-        price: 30000, 
-        category: "jasa", 
-        img: "img/akun.jpg" // Gambar User/Profile
-    }
+    { id: 6, name: "Classic WR (1 Match)", price: 5000, category: "classic", img: "img/alucard.jpg" },
+    { id: 7, name: "Paket WR 100% (10x)", price: 60000, category: "classic", img: "img/push mmr.jpg" },
+    { id: 8, name: "Push MMR Hero", price: 40000, category: "classic", img: "img/yss.jpg" },
+    { id: 9, name: "Joki Gendong (Jam)", price: 35000, category: "jasa", img: "img/mpl.jfif" },
+    { id: 10, name: "Joki MCL Mingguan", price: 100000, category: "jasa", img: "img/mcl.jpg" },
+    { id: 11, name: "Unbind Paksa Akun", price: 50000, category: "jasa", img: "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=500&auto=format&fit=crop" },
+    { id: 12, name: "Akun Smurf Lvl 30", price: 30000, category: "jasa", img: "img/akun.jpg" }
 ];
 
 let cart = [];
@@ -103,6 +40,7 @@ let cart = [];
 // 2. DOM ELEMENTS
 // =========================================
 const productList = document.getElementById('product-list');
+const flashList = document.getElementById('flash-list'); // Container Flash Sale
 const searchBox = document.getElementById('search-box');
 const cartBtn = document.getElementById('shopping-cart-btn');
 const closeCartBtn = document.getElementById('close-cart-btn');
@@ -117,20 +55,26 @@ const cartCountBadge = document.getElementById('cart-count');
 // =========================================
 function renderProducts(filter = 'all') {
     productList.innerHTML = '';
+    
+    // 1. Render Produk Biasa
     productsData.forEach(product => {
         if (filter === 'all' || product.category === filter) {
             const card = document.createElement('div');
             card.classList.add('product-card');
             card.setAttribute('data-name', product.name.toLowerCase());
+            const imgSrc = product.img || 'https://via.placeholder.com/300?text=Joki'; 
             
-            // Gambar default jika error
-            const imgSrc = product.img || 'https://via.placeholder.com/300?text=Joki+Game'; 
+            // Logic Harga Coret
+            let priceHtml = `Rp ${product.price.toLocaleString()}`;
+            if(product.originalPrice) {
+                priceHtml = `<span class="slash-price">Rp ${product.originalPrice.toLocaleString()}</span> ${priceHtml}`;
+            }
             
             card.innerHTML = `
                 <img src="${imgSrc}" alt="${product.name}" class="card-img">
                 <div class="card-info">
                     <h3>${product.name}</h3>
-                    <div class="card-price">Rp ${product.price.toLocaleString()}</div>
+                    <div class="card-price">${priceHtml}</div>
                     <button class="btn-add" onclick="addToCart('${product.name}', ${product.price}, '${imgSrc}')">
                         + Keranjang
                     </button>
@@ -139,7 +83,36 @@ function renderProducts(filter = 'all') {
         }
     });
 }
+
+// 2. Render Flash Sale (Hanya produk yang ada originalPrice)
+function renderFlashSale() {
+    const flashItems = productsData.filter(p => p.originalPrice);
+    flashList.innerHTML = '';
+    
+    flashItems.forEach(product => {
+        const card = document.createElement('div');
+        card.classList.add('product-card', 'flash-card'); // Style beda dikit
+        const imgSrc = product.img || 'https://via.placeholder.com/300';
+        
+        card.innerHTML = `
+            <div class="flash-badge">-20%</div>
+            <img src="${imgSrc}" alt="${product.name}" class="card-img">
+            <div class="card-info">
+                <h3>${product.name}</h3>
+                <div class="card-price">
+                    <span class="slash-price">Rp ${product.originalPrice.toLocaleString()}</span>
+                    Rp ${product.price.toLocaleString()}
+                </div>
+                <button class="btn-add" onclick="addToCart('${product.name}', ${product.price}, '${imgSrc}')">
+                    🔥 Ambil Promo
+                </button>
+            </div>`;
+        flashList.appendChild(card);
+    });
+}
+
 renderProducts();
+renderFlashSale();
 
 // =========================================
 // 4. FILTER & SEARCH
@@ -179,15 +152,22 @@ function addToCart(name, price, img) {
 function updateCartUI() {
     cartItemsContainer.innerHTML = '';
     let total = 0, count = 0;
-    if(cart.length === 0) cartItemsContainer.innerHTML = `<div class="empty-state"><i data-feather="shopping-bag" style="width:40px;height:40px;margin-bottom:10px;"></i><p>Keranjang kosong</p></div>`;
+    if (cart.length === 0) {
+        cartItemsContainer.innerHTML = `<div class="empty-state"><i data-feather="shopping-bag" style="width:40px;height:40px;margin-bottom:10px;color:#555;"></i><p style="color:#555;">Keranjang Kosong</p></div>`;
+    }
     cart.forEach((item, index) => {
-        total += item.price * item.quantity; count += item.quantity;
+        total += item.price * item.quantity;
+        count += item.quantity;
         const el = document.createElement('div');
         el.classList.add('cart-item');
         el.innerHTML = `
-            <img src="${item.img}" alt="img">
-            <div class="cart-item-info"><h4>${item.name}</h4><p>Rp ${item.price.toLocaleString()} x ${item.quantity}</p></div>
-            <i data-feather="trash-2" class="remove-item" onclick="removeItem(${index})"></i>`;
+            <img src="${item.img}" alt="${item.name}" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover; flex-shrink: 0;">
+            <div class="cart-item-info" style="flex: 1; overflow: hidden; margin-left:10px;">
+                <h4 style="font-size: 0.9rem; margin-bottom: 5px; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.name}</h4>
+                <p style="font-size: 0.8rem; color: #FFB800;">Rp ${item.price.toLocaleString()} x ${item.quantity}</p>
+            </div>
+            <i data-feather="trash-2" class="remove-item" style="color: #ff4444; cursor: pointer; margin-left: 10px;" onclick="removeItem(${index})"></i>
+        `;
         cartItemsContainer.appendChild(el);
     });
     totalPriceEl.textContent = `Rp ${total.toLocaleString()}`;
@@ -227,13 +207,13 @@ function kirimWA(id, status, method) {
 }
 
 // =========================================
-// 7. FEATURES: SLIDER, COUNTDOWN, NOTIF
+// 7. FEATURES
 // =========================================
 // SLIDER
 let slideIndex = 0;
 function showSlides() {
     const slides = document.querySelectorAll('.slide');
-    if(slides.length === 0) return; // Prevent error
+    if(slides.length === 0) return; 
     if (slideIndex >= slides.length) slideIndex = 0;
     if (slideIndex < 0) slideIndex = slides.length - 1;
     slides.forEach(slide => slide.classList.remove('active'));
@@ -258,15 +238,14 @@ function updateTimer() {
 }
 setInterval(updateTimer, 1000);
 
-// LIVE NOTIFICATION (Menggunakan Gambar Unsplash yang Sama)
+// LIVE NOTIFICATION
 const buyers = ['Andi', 'Budi', 'Citra', 'Dewi', 'Eko', 'Rizky', 'Fajar', 'Gilang'];
 const locs = ['Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Bali', 'Makassar'];
-
 const notifProducts = [
-    { name: 'Joki Rank Epic', img: 'https://images.unsplash.com/photo-1533236897111-3e94666b2edf?q=80&w=100&auto=format&fit=crop' },
-    { name: 'Paket Glory', img: 'https://images.unsplash.com/photo-1561883088-039e53143d73?q=80&w=100&auto=format&fit=crop' },
-    { name: 'Joki Gendong', img: 'https://images.unsplash.com/photo-1592840496011-b58a2adcee97?q=80&w=100&auto=format&fit=crop' },
-    { name: 'Classic WR', img: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=100&auto=format&fit=crop' }
+    { name: 'Joki Rank Epic', img: 'img/epic.jpg' },
+    { name: 'Paket Glory', img: 'img/glory.jpg' },
+    { name: 'Joki Gendong', img: 'img/mpl.jfif' },
+    { name: 'Classic WR', img: 'img/alucard.jpg' }
 ];
 
 function showNotif() {
@@ -275,15 +254,14 @@ function showNotif() {
     const name = buyers[Math.floor(Math.random()*buyers.length)];
     const loc = locs[Math.floor(Math.random()*locs.length)];
     const prod = notifProducts[Math.floor(Math.random()*notifProducts.length)]; 
-    
+    const imgNotif = prod.img.includes('http') || prod.img.includes('img/') ? prod.img : 'https://placehold.co/100x100/1a1a1a/FFB800?text=Joki';
     notif.innerHTML = `
-        <img src="${prod.img}" class="notif-img">
+        <img src="${imgNotif}" class="notif-img">
         <div class="notif-text">
             <h4>${name} (${loc})</h4>
             <p>Beli ${prod.name}</p>
             <div class="notif-time">Baru saja</div>
         </div>`;
-        
     notif.classList.add('show');
     setTimeout(() => notif.classList.remove('show'), 4000);
 }
